@@ -91,7 +91,7 @@
                                     <div class="mb-4">
                                         <h5 class="card-title mb-0 text-white">Planeación</h5>
                                     </div>
-                                    <p class="text-right"><a href="/planeacion" class="btn btn btn-light"><i class="fas fa-solid fa-plus"></i> Entrar</a></p>
+                                    <p class="text-right"><a href="{{ route('planeacion.anios')}}" class="btn btn btn-light"><i class="fas fa-solid fa-plus"></i> Entrar</a></p>
                                 </div>
                             </div>
                         </div>
@@ -102,7 +102,7 @@
                                     <div class="mb-4">
                                         <h5 class="card-title mb-0 text-white">Gestión</h5>
                                     </div>
-                                    <p class="text-right"><a href="/gestion" class="btn btn-light"><i class="fas fa-solid fa-plus"></i> Entrar</a></p>
+                                    <p class="text-right"><a href="{{ route('gestion.anios')}}" class="btn btn-light"><i class="fas fa-solid fa-plus"></i> Entrar</a></p>
                                 </div>
                             </div>
                         </div>
@@ -114,7 +114,7 @@
                                     <div class="mb-4">
                                         <h5 class="card-title mb-0 text-white">Recursos Humanos</h5>
                                     </div>
-                                    <p class="text-right"><a href="/rh" class="btn btn btn-light"><i class="fas fa-solid fa-plus"></i> Entrar</a></p>
+                                    <p class="text-right"><a href="{{ route('rh.anios')}}" class="btn btn btn-light"><i class="fas fa-solid fa-plus"></i> Entrar</a></p>
                                 </div>
                             </div>
                         </div>
@@ -126,7 +126,7 @@
                                     <div class="mb-4">
                                         <h5 class="card-title mb-0 text-white">Equipos Físicos</h5>
                                     </div>
-                                    <p class="text-right"><a href="/equipos-fisicos" class="btn btn btn btn-light"><i class="fas fa-solid fa-plus"></i> Entrar</a></p>
+                                    <p class="text-right"><a href="{{ route('equiposfisicos.anios')}}" class="btn btn btn btn-light"><i class="fas fa-solid fa-plus"></i> Entrar</a></p>
                                 </div>
                             </div>
                         </div>
@@ -138,7 +138,7 @@
                                     <div class="mb-4">
                                         <h5 class="card-title mb-0 text-white">Centro de Datos</h5>
                                     </div>
-                                    <p class="text-right"><a href="/centro-datos" class="btn btn btn btn-light"><i class="fas fa-solid fa-plus"></i> Entrar</a></p>
+                                    <p class="text-right"><a href="{{ route('centrodatos.anios')}}" class="btn btn btn btn-light"><i class="fas fa-solid fa-plus"></i> Entrar</a></p>
                                 </div>
                             </div>
                         </div>
@@ -150,7 +150,7 @@
                                     <div class="mb-4">
                                         <h5 class="card-title mb-0 text-white">Redes y Telecomunicacioes</h5>
                                     </div>
-                                    <p class="text-right"><a href="/red-tel" class="btn btn btn btn-light"><i class="fas fa-solid fa-plus"></i> Entrar</a></p>
+                                    <p class="text-right"><a href="{{ route('redtel.anios')}}" class="btn btn btn btn-light"><i class="fas fa-solid fa-plus"></i> Entrar</a></p>
                                 </div>
                             </div>
                         </div>
@@ -162,7 +162,7 @@
                                     <div class="mb-4">
                                         <h5 class="card-title mb-0 text-white">Equipo de Cómputo</h5>
                                     </div>
-                                    <p class="text-right"><a href="/equipo-computo" class="btn btn btn btn-light"><i class="fas fa-solid fa-plus"></i> Entrar</a></p>
+                                    <p class="text-right"><a href="{{ route('equipocomputo.anios')}}" class="btn btn btn btn-light"><i class="fas fa-solid fa-plus"></i> Entrar</a></p>
                                 </div>
                             </div>
                         </div>
@@ -174,7 +174,7 @@
                                     <div class="mb-4">
                                         <h5 class="card-title mb-0 text-white">Tecnología Móvil</h5>
                                     </div>
-                                    <p class="text-right"><a href="/tec-movil" class="btn btn btn btn-light"><i class="fas fa-solid fa-plus"></i> Entrar</a></p>
+                                    <p class="text-right"><a href="{{ route('tecmovil.anios')}}" class="btn btn btn btn-light"><i class="fas fa-solid fa-plus"></i> Entrar</a></p>
                                 </div>
                             </div>
                         </div>
@@ -186,7 +186,7 @@
                                     <div class="mb-4">
                                         <h5 class="card-title mb-0 text-white">Sistemas, aplicaciones y servicios</h5>
                                     </div>
-                                    <p class="text-right"><a href="/sis-app-serv" class="btn btn btn btn-light"><i class="fas fa-solid fa-plus"></i> Entrar</a></p>
+                                    <p class="text-right"><a href="{{ route('sisappserv.anios')}}" class="btn btn btn btn-light"><i class="fas fa-solid fa-plus"></i> Entrar</a></p>
                                 </div>
                             </div>
                         </div>
@@ -198,7 +198,7 @@
                                     <div class="mb-4">
                                         <h5 class="card-title mb-0 text-white">Bases de Datos</h5>
                                     </div>
-                                    <p class="text-right"><a href="/bd" class="btn btn btn btn-light"><i class="fas fa-solid fa-plus"></i> Entrar</a></p>
+                                    <p class="text-right"><a href="{{ route('bd.anios')}}" class="btn btn btn btn-light"><i class="fas fa-solid fa-plus"></i> Entrar</a></p>
                                 </div>
                             </div>
                         </div>
@@ -215,10 +215,12 @@
             <div class="card" style="width: 80rem;">
                 <h1 class="card-header">Gráfica de cumplimiento general</h1>
                 <div class="card-body">
-                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                @can('editar-control mínimo')
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                         <h5>Descargar reporte
+                        </h5><br><a class="btn btn-success" href="#" onclick="capturarImagenYGenerarPDF();"><i class="fas fa-file-pdf"></i></a>
                     </div>
-                    
+                    @endcan
                     <div class="container">
                         <div class="row justify-content-center">
                             <div class="col-md-5">
@@ -230,13 +232,6 @@
                                 <canvas id="graficaCumplimientoTodosProcesos" width="800" height="500"></canvas>
                             </div>
                         </div>
-                        <div class="container">
-    <div class="d-flex justify-content-center mb-2">
-        <a href="#" onclick="capturarImagenYGenerarPDF();" class="btn btn-danger">
-            <i class="fas fa-file-pdf"></i> Descargar Reporte
-        </a>
-    </div>
-</div>
                     </div>
                 </div>
             </div>

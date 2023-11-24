@@ -64,16 +64,16 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link active dropdown-toggle" aria-current="page" href="#" role="button" data-bs-toggle="dropdown">Controles mínimos</a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <li><a class="dropdown-item" href="/planeacion">Planeación</a></li>
-                                <li><a class="dropdown-item" href="/gestion">Gestión</a></li>
-                                <li><a class="dropdown-item" href="/rh">Recursos humanos</a></li>
-                                <li><a class="dropdown-item" href="/equipos-fisicos">Equipos físicos</a></li>
-                                <li><a class="dropdown-item" href="/centro-datos">Centros de datos</a></li>
-                                <li><a class="dropdown-item" href="/red-tel">Redes y telecomunicaciones</a></li>
-                                <li><a class="dropdown-item" href="/equipo-computo">Equipo de cómputo</a></li>
-                                <li><a class="dropdown-item" href="/tec-movil">Tecnologia móvil</a></li>
-                                <li><a class="dropdown-item" href="/sis-app-serv">Sistemas, aplicaciones y servicios</a></li>
-                                <li><a class="dropdown-item" href="/bd">Bases de datos</a></li>
+                                <li><a class="dropdown-item" href="<?php echo e(route('planeacion.anios')); ?>">Planeación</a></li>
+                                <li><a class="dropdown-item" href="<?php echo e(route('gestion.anios')); ?>">Gestión</a></li>
+                                <li><a class="dropdown-item" href="<?php echo e(route('rh.anios')); ?>">Recursos humanos</a></li>
+                                <li><a class="dropdown-item" href="<?php echo e(route('equiposfisicos.anios')); ?>">Equipos físicos</a></li>
+                                <li><a class="dropdown-item" href="<?php echo e(route('centrodatos.anios')); ?>">Centros de datos</a></li>
+                                <li><a class="dropdown-item" href="<?php echo e(route('redtel.anios')); ?>">Redes y telecomunicaciones</a></li>
+                                <li><a class="dropdown-item" href="<?php echo e(route('equipocomputo.anios')); ?>">Equipo de cómputo</a></li>
+                                <li><a class="dropdown-item" href="<?php echo e(route('tecmovil.anios')); ?>">Tecnologia móvil</a></li>
+                                <li><a class="dropdown-item" href="<?php echo e(route('sisappserv.anios')); ?>">Sistemas, aplicaciones y servicios</a></li>
+                                <li><a class="dropdown-item" href="<?php echo e(route('bd.anios')); ?>">Bases de datos</a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">

@@ -17,7 +17,7 @@
 
                     </div>
                     <?php endif; ?>
-                    <form method="POST" action="<?php echo e(route('filtrar.informacionG')); ?>">
+                    <!-- <form method="POST" action="<?php echo e(route('filtrar.informacion')); ?>">
                         <?php echo csrf_field(); ?>
                         <div class="col-md-3">
 
@@ -31,12 +31,12 @@
                             </select>
                             <button class="btn btn-sm btn-success" type="submit" style="display: inline-block;"><i
                                     class="fa fa-search"></i></button>
-                            <a class="btn btn-sm btn-success" href="<?php echo e(route('gestion.index')); ?>"
+                            <a class="btn btn-sm btn-success" href="<?php echo e(route('planeacion.index')); ?>"
                                 style="display: inline-block;"><i class="fa fa-rotate-left"></i></a>
 
                         </div>
-                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('editar-control mínimo')): ?>
-                    </form>
+                    </form>-->
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('editar-control mínimo')): ?>
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                         <a class="btn btn-success" href="<?php echo e(route('gestion.create')); ?>"><i class="fa fa-plus">
                                 Nuevo</i></a>
@@ -57,57 +57,72 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php $__empty_1 = true; $__currentLoopData = $controles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $control): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                                <?php $__currentLoopData = $controles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $control): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <tr>
                                     <td style="text-align:justify">
                                         <h6><?php echo e($control->descripcionControlMinimo); ?></h6>
                                     </td>
                                     <td style="text-align:center">
+                                        <!-- Muestra la imagen de la última actualización -->
+                                        <?php if($control->cumplimientoControlMinimo->isNotEmpty()): ?>
                                         <?php
-                                        $status = $control->statusCumplimiento;
-                                        if ($status == "Sí") {
-                                            print '<img src="/images/chek.png">';
-                                        } else {
-                                            print '<img src="/images/false.png">';
-                                        }
+                                        $latestStatus = $control->cumplimientoControlMinimo->last()->statusCumplimiento;
                                         ?>
-                                    </td>
-                                    <td style="text-align:center">
-                                    <?php if($control->documentoEvidencia): ?>
-                                        <a href="<?php echo e(url('/download/'.$control->idControlMinimo)); ?>"><i class="fa fa-file"></i></a>
-                                    <?php else: ?>
-                                        <!-- Puedes cambiar 'fa-exclamation' por otro ícono que desees mostrar si no hay archivo -->
-                                        <i class="fa fa-exclamation"></i>
-                                    <?php endif; ?>
-                                    </td>
-                                    <td style="text-align:center">
-                                        <h6><?php echo e($control->observacionCumplimiento); ?></h6>
-                                    </td>
-                                    <td style="text-align:center">
-                                        <h6><?php echo e($control->atencionCumplimiento); ?></h6>
-                                    </td>
-                                    <td style="text-align:center">
-                                        <h6><?php echo e($control->semestre); ?></h6>
-                                    </td>
-                                    <td style="text-align:center"><a class="btn btn-sm btn-info"
-                                            href="<?php echo e(route('gestion.edit', $control->idControlMinimo)); ?>"><i
-                                                class="fa fa-edit"></i></a>
-                                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('editar-control mínimo')): ?>
-                                        <form action="<?php echo e(route('gestion.destroy', $control->idControlMinimo)); ?>"
-                                            method="post" style="display: inline-block;"
-                                            onsubmit="return confirm('¿Desea eliminar?')">
-                                            <?php echo csrf_field(); ?>
-                                            <?php echo method_field('DELETE'); ?>
-                                            <button class="btn btn-sm btn-danger" type="submit">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                        </form>
+                                        <?php if($latestStatus == "Sí"): ?>
+                                        <img src="/images/chek.png">
+                                        <?php else: ?>
+                                        <img src="/images/false.png">
+                                        <?php endif; ?>
                                         <?php endif; ?>
                                     </td>
+                                    <td style="text-align:center">
+                                        <?php if($control->cumplimientoControlMinimo->isNotEmpty()): ?>
+                                        <?php
+                                        $latestActualizacion = $control->cumplimientoControlMinimo->last();
+                                        ?>
+                                        <?php if($latestActualizacion->documentoEvidencia): ?>
+                                        <a href="<?php echo e(url('/download/'.$control->idControlMinimo)); ?>"><i
+                                                class="fa fa-file"></i></a>
+                                        <?php else: ?>
+                                        <i class="fa fa-exclamation"></i>
+                                        <?php endif; ?>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td style="text-align:center">
+                                        <?php if($control->cumplimientoControlMinimo->isNotEmpty()): ?>
+                                        <?php echo e($latestActualizacion->observacionCumplimiento); ?>
+
+                                        <?php endif; ?>
+                                    </td>
+                                    <td style="text-align:center">
+                                        <?php if($control->cumplimientoControlMinimo->isNotEmpty()): ?>
+                                        <?php echo e($latestActualizacion->atencionCumplimiento); ?>
+
+                                        <?php endif; ?>
+                                    </td>
+                                    <td style="text-align:center">
+                                        <?php if($control->cumplimientoControlMinimo->isNotEmpty()): ?>
+                                        <?php echo e($latestActualizacion->semestre); ?>
+
+                                        <?php endif; ?>
+                                    </td>
+                                    <td style="text-align:center">
+                                        <a class="btn btn-sm btn-info"
+                                            href="<?php echo e(route('gestion.edit', $control->idControlMinimo)); ?>"><i
+                                                class="fa fa-edit"></i></a>
+                                        <!--<?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('editar-control mínimo')): ?>
+                    <form action="<?php echo e(route('planeacion.destroy', $control->idControlMinimo)); ?>" method="post"
+                        style="display: inline-block;" onsubmit="return confirm('¿Desea eliminar?')">
+                        <?php echo csrf_field(); ?>
+                        <?php echo method_field('DELETE'); ?>
+                        <button class="btn btn-sm btn-danger" type="submit">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </form>
+                <?php endif; ?>-->
+                                    </td>
                                 </tr>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-                                <p>No hay datos disponibles en la base de datos.</p>
-                                <?php endif; ?>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </tbody>
                         </table>
                     </div>
@@ -123,10 +138,12 @@
             <div class="card" style="width: 80rem;">
                 <h1 class="card-header">Gráficas de cumplimiento</h1>
                 <div class="card-body">
-                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('editar-control mínimo')): ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('editar-control mínimo')): ?>
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                         <h5>Descargar reporte
-                        </h5><br><a class="btn btn-success" href="/generar-reporteG"><i class="fa fa-download"></i></a>
+                        </h5><br><a class="btn btn-success"
+                            href="<?php echo e(route('reporte.generarG', ['year' => $year, 'semester' => $semester])); ?>"><i
+                                class="fa fa-download"></i></a>
                     </div>
                     <?php endif; ?>
                     <div class="container">
@@ -145,69 +162,58 @@
                 </div>
             </div>
             <br>
-            <div style="display: flex; justify-content: space-between; width: 80rem;">
-                <a class="btn btn-success" href="<?php echo e(route('planeacion.index')); ?>" style="display: inline-block; float: right;">
-                <i class="fa fa-solid fa-arrow-left"></i> Regresar 
-                </a>
-                <a class="btn btn-success" href="<?php echo e(route('rh.index')); ?>" style="display: inline-block; float: left;">
-                Ir a la siguiente etapa <i class="fa fa-solid fa-arrow-right"></i>
+            <div style="display: flex; justify-content: flex-end; width: 80rem;">
+                <a class="btn btn-success" href="<?php echo e(route('gestion.index')); ?>"
+                    style="display: inline-block; float: right;">
+                    Ir a la siguiente etapa <i class="fa fa-solid fa-arrow-right"></i>
                 </a>
             </div>
         </div>
     </div>
 </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@0.5.0/dist/html2canvas.min.js"></script>
-<script>
-    // Obtén el porcentaje de cumplimiento de Laravel y almacénalo en una variable JavaScript
-    var porcentajeCumplimiento = <?php echo e($porcentajeCumplimiento); ?>;
+    <!-- Sección de scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@0.5.0/dist/html2canvas.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Configuración y datos para la primera gráfica
+            var porcentajeCumplimiento = <?php echo e($porcentajeCumplimiento); ?>;
+            var data = {
+                datasets: [{
+                    data: [porcentajeCumplimiento, 100 - porcentajeCumplimiento],
+                    backgroundColor: ["#00b569", "#ff0000"],
+                }],
+                labels: ['Sí cumple', 'No cumple'],
+            };
+            var options = {
+                responsive: true,
+                cutoutPercentage: 50,
+            };
+            var ctx = document.getElementById('doughnutChart').getContext('2d');
+            var myDoughnutChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: data,
+                options: options,
+            });
 
-    // Configura los datos de la gráfica de dona
-    var data = {
-        datasets: [{
-            data: [porcentajeCumplimiento, 100 - porcentajeCumplimiento],
-            backgroundColor: ["#00b569", "#ff0000"], // Colores de las porciones de la dona
-        }],
-        labels: ['Sí cumple', 'No cumple'],
-    };
-
-    // Configura las opciones de la gráfica
-    var options = {
-        responsive: true,
-        cutoutPercentage: 50, // Controla el tamaño del agujero en el centro de la dona
-    };
-
-    // Obtén el elemento canvas
-    var ctx = document.getElementById('doughnutChart').getContext('2d');
-
-
-    // Crea la gráfica de dona
-    var myDoughnutChart = new Chart(ctx, {
-        type: 'doughnut',
-        data: data,
-        options: options,
-    });
-
-</script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var ctx = document.getElementById('miGrafica').getContext('2d');
-
-        var archivosSubidos = <?php echo $archivosSubidos; ?>;
-    var archivosFaltantes = <?php echo $archivosFaltantes; ?>;
-
-    var myChart = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: ['Subida', 'Faltante'],
-            datasets: [{
-                data: [archivosSubidos, archivosFaltantes],
-                backgroundColor: ["#00b569", "#ff0000"],
-            }],
-        },
-    });
-    });
-</script>
+            // Configuración y datos para la segunda gráfica
+            var archivosSubidos = <?php echo $archivosSubidos; ?>;
+            var archivosFaltantes = <?php echo $archivosFaltantes; ?>;
+            var secondData = {
+                labels: ['Subida', 'Faltante'],
+                datasets: [{
+                    data: [archivosSubidos, archivosFaltantes],
+                    backgroundColor: ["#00b569", "#ff0000"],
+                }],
+            };
+            var secondCtx = document.getElementById('miGrafica').getContext('2d');
+            var mySecondChart = new Chart(secondCtx, {
+                type: 'doughnut',
+                data: secondData,
+            });
+        });
+    </script>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.vistaadministrador', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/sistemaSRCMS/P-SRCMS/resources/views/controlminimo/gestion/index.blade.php ENDPATH**/ ?>

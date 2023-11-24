@@ -30,7 +30,7 @@
                         </button>
                     </div>
                     @endif
-
+                    
                     {!! Form::model($control, ['method'=>'PATCH', 'files' => true, 'route' => ['rh.update',
                     $control->idControlMinimo]]) !!}
                     @csrf
@@ -62,7 +62,8 @@
                             <div class="input-group mb-3">
                                 <label for="">Evidencia:</label> 
                             </div>
-                            {!! Form::file('documentoEvidencia', null, array('class' => 'form-control', 'required' => 'required' ))!!}
+                            {!! Form::file('documentoEvidencia', ['class' => 'form-control', 'required' => 'required', 'accept' => '.doc, .docx, .xls, .xlsx, .ppt, .pptx, .pdf']) !!}
+
                         </div>
                         <div class="col-xs-6 col-sm-6 col-md-3">
                                 <label for="">Semestre</label><br>
@@ -70,6 +71,15 @@
                                 <option value="" selected disabled>Seleccione un semestre</option>
                                  <option value="Ene-Jun">Ene-Jun</option>
                                 <option value="Jul-Dic">Jul-Dic</option>
+                                </select>
+                        </div>
+                        <div class="col-xs-6 col-sm-6 col-md-3">
+                                <label for="">Año</label><br>
+                                <select class="form-control" id="anio" name="anio" required>
+                                <option value="" selected disabled>Seleccione un año</option>
+                                @foreach($years as $year)
+                                    <option value="{{ $year }}">{{ $year }}</option>
+                                @endforeach
                                 </select>
                         </div>
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
@@ -82,5 +92,5 @@
         </div>
     </div>
 </div>
-</div>
+</div>      
 @endsection

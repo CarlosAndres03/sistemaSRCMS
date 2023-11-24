@@ -11,4 +11,9 @@ class ControlMinimo extends Model
     protected $table = 'ControlMinimos';
     protected $primaryKey = 'idControlMinimo';
     protected $fillable = ['descripcionControlMinimo','statusCumplimiento', 'documentoEvidencia', 'observacionCumplimiento', 'atencionCumplimiento'];
+
+    public function cumplimientoControlMinimo()
+    {
+        return $this->hasMany(CumplimientoControl::class, 'idControlMinimo');
+    }
 }

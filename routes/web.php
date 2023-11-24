@@ -41,23 +41,37 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/bloqueado', [UsuarioController::class, 'bloqueado'])->name('bloqueado');
 Route::get('/resetpassword', [UsuarioController::class, 'resetpassword'])->name('usuarios.resetcontraseña');
 Route::patch('/restablecer-contraseña/{id}', [UsuarioController::class, 'updatePassword'])->name('usuarios.updatePassword');
+Route::get('/aniosPlaneacion', [PlaneacionController::class, 'anios'])->name('planeacion.anios');
+Route::get('/aniosGestion', [GestionController::class, 'anios'])->name('gestion.anios');
+Route::get('/aniosRH', [RHController::class, 'anios'])->name('rh.anios');
+Route::get('/aniosEF', [EquiposFisicosController::class, 'anios'])->name('equiposfisicos.anios');
+Route::get('/aniosCD', [CentroDatosController::class, 'anios'])->name('centrodatos.anios');
+Route::get('/aniosRT', [RedesTelController::class, 'anios'])->name('redtel.anios');
+Route::get('/aniosEC', [EquipoComputoController::class, 'anios'])->name('equipocomputo.anios');
+Route::get('/aniosTM', [TecnologiaMovilController::class, 'anios'])->name('tecmovil.anios');
+Route::get('/aniosSAS', [SisAppServController::class, 'anios'])->name('sisappserv.anios');
+Route::get('/aniosBD', [BDController::class, 'anios'])->name('bd.anios');
 
 //Rutas para la generación de reportes
 //Route::get('/generar-reporteGeneral', [HomeController::class, 'generarPDF']);
-Route::get('/generar-reporte', [PlaneacionController::class, 'generarPDF']);
-Route::get('/generar-reporteG', [GestionController::class, 'generarPDF']);
-Route::get('/generar-reporteR', [RHController::class, 'generarPDF']);
-Route::get('/generar-reporteE', [EquiposFIsicosController::class, 'generarPDF']);
-Route::get('/generar-reporteC', [CentroDatosController::class, 'generarPDF']);
-Route::get('/generar-reporteRT', [RedesTelController::class, 'generarPDF']);
-Route::get('/generar-reporteEC', [EquipoComputoController::class, 'generarPDF']);
-Route::get('/generar-reporteT', [TecnologiaMovilController::class, 'generarPDF']);
-Route::get('/generar-reporteS', [SisAppServController::class, 'generarPDF']);
-Route::get('/generar-reporteB', [BDController::class, 'generarPDF']);
+Route::get('/generar-reporte', [PlaneacionController::class, 'generarPDF'])->name('reporte.generar');
+Route::get('/generar-reporteG', [GestionController::class, 'generarPDF'])->name('reporte.generarG');
+Route::get('/generar-reporteR', [RHController::class, 'generarPDF'])->name('reporte.generarR');
+Route::get('/generar-reporteE', [EquiposFisicosController::class, 'generarPDF'])->name('reporte.generarE');
+Route::get('/generar-reporteC', [CentroDatosController::class, 'generarPDF'])->name('reporte.generarC');
+Route::get('/generar-reporteRT', [RedesTelController::class, 'generarPDF'])->name('reporte.generarRT');
+Route::get('/generar-reporteEC', [EquipoComputoController::class, 'generarPDF'])->name('reporte.generarEC');
+Route::get('/generar-reporteT', [TecnologiaMovilController::class, 'generarPDF'])->name('reporte.generarT');
+Route::get('/generar-reporteS', [SisAppServController::class, 'generarPDF'])->name('reporte.generarS');
+Route::get('/generar-reporteB', [BDController::class, 'generarPDF'])->name('reporte.generarB');
 
-Route::get('/generar-pdfCompleto2/{nombreImagen?}', [HomeController::class, 'generarPDF'])->name('generarPDF');
+Route::get('/generar-pdfCompleto2/{year}/{semester}/{nombreImagen?}', [HomeController::class, 'generarPDF'])->name('generarPDF');
 Route::post('/guardar-imagen-linea', [HomeController::class, 'guardarImagenLinea'])->name('guardarImagenLinea');
-Route::post('/eliminar-imagen-linea', [HomeController::class, 'eliminarImagenLinea'])->name('eliminarImagenLinea');
+Route::post('/eliminar-imagen-linea', [HomeController::class, 'eliminarImagenLinea'])->name('eliminarImagenLinea'); 
+
+Route::get('/generar-pdfCompleto2/{nombreImagen?}', [PlaneacionController::class, 'generarPDF'])->name('generarPDF');
+Route::post('/guardar-imagen-linea', [PlaneacionController::class, 'guardarImagenLinea'])->name('guardarImagenLinea');
+Route::post('/eliminar-imagen-linea', [PlaneacionController::class, 'eliminarImagenLinea'])->name('eliminarImagenLinea');
 
 //Rutas para la filtración de información por semestre
 Route::post('/filtrar-informacion', [PlaneacionController::class, 'filtrar'])->name('filtrar.informacion');

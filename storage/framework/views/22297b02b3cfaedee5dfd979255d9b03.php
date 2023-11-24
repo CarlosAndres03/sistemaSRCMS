@@ -7,8 +7,8 @@
 <?php $__env->startSection('content'); ?>
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-12">
-            <div class="card" style="width: 80rem;">
+        <div class="col-md-10">
+            <div class="card" style="width: 60rem;">
                 <h1 class="card-header">Equipos Físicos</h1>
                 <div class="card-body">
                     <?php if(session('status')): ?>
@@ -30,7 +30,7 @@
                         </button>
                     </div>
                     <?php endif; ?>
-
+                    
                     <?php echo Form::model($control, ['method'=>'PATCH', 'files' => true, 'route' => ['equipos-fisicos.update',
                     $control->idControlMinimo]]); ?>
 
@@ -65,7 +65,8 @@
                             <div class="input-group mb-3">
                                 <label for="">Evidencia:</label> 
                             </div>
-                            <?php echo Form::file('documentoEvidencia', null, array('class' => 'form-control', 'required' => 'required' )); ?>
+                            <?php echo Form::file('documentoEvidencia', ['class' => 'form-control', 'required' => 'required', 'accept' => '.doc, .docx, .xls, .xlsx, .ppt, .pptx, .pdf']); ?>
+
 
                         </div>
                         <div class="col-xs-6 col-sm-6 col-md-3">
@@ -74,6 +75,15 @@
                                 <option value="" selected disabled>Seleccione un semestre</option>
                                  <option value="Ene-Jun">Ene-Jun</option>
                                 <option value="Jul-Dic">Jul-Dic</option>
+                                </select>
+                        </div>
+                        <div class="col-xs-6 col-sm-6 col-md-3">
+                                <label for="">Año</label><br>
+                                <select class="form-control" id="anio" name="anio" required>
+                                <option value="" selected disabled>Seleccione un año</option>
+                                <?php $__currentLoopData = $years; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $year): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($year); ?>"><?php echo e($year); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </select>
                         </div>
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
@@ -87,6 +97,6 @@
         </div>
     </div>
 </div>
-</div>
+</div>      
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.vistaadministrador', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/sistemaSRCMS/P-SRCMS/resources/views/controlminimo/equiposfisicos/edit.blade.php ENDPATH**/ ?>
