@@ -101,8 +101,8 @@
                                     <?php echo e(__('Salir')); ?>
 
                                 </a>
-                                <a class="dropdown-item" href="<?php echo e(route('usuarios.resetcontraseña')); ?>">Cambiar contraseña</a>
-                                <form id="logout-form" action="<?php echo e(route('logout')); ?>" method="POST" class="d-none">
+                                <a class="dropdown-item" href="<?php echo e(route('usuarios.showResetpassword')); ?>">Cambiar contraseña</a>
+                                 <form id="logout-form" action="<?php echo e(route('logout')); ?>" method="POST" class="d-none">
                                     <?php echo csrf_field(); ?>
                                 </form>
                             </div>

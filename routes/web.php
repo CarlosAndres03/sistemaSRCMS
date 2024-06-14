@@ -39,8 +39,9 @@ Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/bloqueado', [UsuarioController::class, 'bloqueado'])->name('bloqueado');
-Route::get('/resetpassword', [UsuarioController::class, 'resetpassword'])->name('usuarios.resetcontraseña');
+Route::get('/resetpassword', [UsuarioController::class, 'showResetpassword'])->name('usuarios.showResetpassword');
 Route::patch('/restablecer-contraseña/{id}', [UsuarioController::class, 'updatePassword'])->name('usuarios.updatePassword');
+Route::patch('/restablecer-contraseña', [UsuarioController::class, 'resetpassword'])->name('usuarios.resetpassword');
 Route::get('/aniosPlaneacion', [PlaneacionController::class, 'anios'])->name('planeacion.anios');
 Route::get('/aniosGestion', [GestionController::class, 'anios'])->name('gestion.anios');
 Route::get('/aniosRH', [RHController::class, 'anios'])->name('rh.anios');
@@ -65,7 +66,7 @@ Route::get('/generar-reporteT', [TecnologiaMovilController::class, 'generarPDF']
 Route::get('/generar-reporteS', [SisAppServController::class, 'generarPDF'])->name('reporte.generarS');
 Route::get('/generar-reporteB', [BDController::class, 'generarPDF'])->name('reporte.generarB');
 
-Route::get('/generar-pdfCompleto2/{year}/{semester}/{nombreImagen?}', [HomeController::class, 'generarPDF'])->name('generarPDF');
+Route::get('/generar-pdfCompleto2/{nombreImagen?}', [HomeController::class, 'generarPDF'])->name('generarPDF');
 Route::post('/guardar-imagen-linea', [HomeController::class, 'guardarImagenLinea'])->name('guardarImagenLinea');
 Route::post('/eliminar-imagen-linea', [HomeController::class, 'eliminarImagenLinea'])->name('eliminarImagenLinea'); 
 

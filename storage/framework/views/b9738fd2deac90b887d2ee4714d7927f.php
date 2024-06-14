@@ -35,14 +35,14 @@
                                 style="display: inline-block;"><i class="fa fa-rotate-left"></i></a>
 
                         </div>
-                    </form>-->
+                    </form>
                     <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('editar-control mínimo')): ?>
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                         <a class="btn btn-success" href="<?php echo e(route('equipo-computo.create')); ?>"><i class="fa fa-plus">
                                 Nuevo</i></a>
                     </div>
                     <?php endif; ?>
-                    <br>
+                    <br>-->
                     <div class="table-responsive">
                         <table class="table align-middle table-bordered">
                             <thead>
@@ -161,13 +161,13 @@
                     <br>
                 </div>
             </div>
-            <br>
+            <br><!--
             <div style="display: flex; justify-content: flex-end; width: 80rem;">
                 <a class="btn btn-success" href="<?php echo e(route('gestion.index')); ?>"
                     style="display: inline-block; float: right;">
                     Ir a la siguiente etapa <i class="fa fa-solid fa-arrow-right"></i>
                 </a>
-            </div>
+            </div>-->
         </div>
     </div>
 </div>

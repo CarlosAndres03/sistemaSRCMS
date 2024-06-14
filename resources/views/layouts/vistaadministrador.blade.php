@@ -98,8 +98,8 @@
                                                      document.getElementById('logout-form').submit();">
                                     {{ __('Salir') }}
                                 </a>
-                                <a class="dropdown-item" href="{{ route('usuarios.resetcontraseña') }}">Cambiar contraseña</a>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                <a class="dropdown-item" href="{{ route('usuarios.showResetpassword') }}">Cambiar contraseña</a>
+                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                     @csrf
                                 </form>
                             </div>

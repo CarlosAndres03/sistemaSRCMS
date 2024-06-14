@@ -92,7 +92,7 @@
             @endforeach
         </tbody>
     </table>
-    <h1 class="card-header">Gráfica de cumplimiento</h1>
+    <!-- <h1 class="card-header">Gráfica de cumplimiento</h1> -->
     <div style="text-align: center;">
         <div class="footer">
             <p>Generado el: {{ now() }}</p>

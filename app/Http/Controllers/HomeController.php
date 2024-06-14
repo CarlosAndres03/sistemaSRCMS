@@ -25,67 +25,104 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $controles = DB::table('ControlMinimos')
+        $controlesPorSemestre = DB::table('CumplimientoControlMinimo')
+            ->select('semestre', 'anio', DB::raw('count(*) as totalRegistros'))
+            ->groupBy('semestre', 'anio')
             ->get();
 
-        $controlCompleto = $controles->filter(function ($control) {
-            return $control->statusCumplimiento === 'Sí';
-        });
+        $totalesPorSemestre = [];
+        foreach ($controlesPorSemestre as $semestre) {
+            $totalesPorSemestre[$semestre->anio][$semestre->semestre] = $semestre->totalRegistros;
+        }
 
-        $controlIncompleto = $controles->filter(function ($control) {
-            return $control->statusCumplimiento === 'No';
-        });
+        $controlCompletoPorSemestre = DB::table('CumplimientoControlMinimo')
+            ->select('semestre', 'anio', DB::raw('count(*) as totalCompleto'))
+            ->where('statusCumplimiento', 'Sí')
+            ->groupBy('semestre', 'anio')
+            ->get();
 
-        $totalControles = $controles->count();
-        $totalCompleto = $controlCompleto->count();
-        $totalIncompleto = $controlIncompleto->count();
+        $controlIncompletoPorSemestre = DB::table('CumplimientoControlMinimo')
+            ->select('semestre', 'anio', DB::raw('count(*) as totalIncompleto'))
+            ->where('statusCumplimiento', 'No')
+            ->groupBy('semestre', 'anio')
+            ->get();
 
-        $porcentajeCumplimiento = ($totalCompleto / $totalControles) * 100;
+        $totalesCompletosPorSemestre = [];
+        $totalesIncompletosPorSemestre = [];
 
-        $archivosSubidos = $controles->where('documentoEvidencia')->count();
-        $archivosFaltantes = 96 - $archivosSubidos; // Cambia 100 por el número total esperado de archivos
-        return view('home', compact('controles', 'controlCompleto', 'controlIncompleto', 'porcentajeCumplimiento', 'archivosSubidos', 'archivosFaltantes'));
+        foreach ($controlCompletoPorSemestre as $completo) {
+            $totalesCompletosPorSemestre[$completo->anio][$completo->semestre] = $completo->totalCompleto;
+        }
 
+        foreach ($controlIncompletoPorSemestre as $incompleto) {
+            $totalesIncompletosPorSemestre[$incompleto->anio][$incompleto->semestre] = $incompleto->totalIncompleto;
+        }
+
+        $porcentajeCumplimientoPorSemestre = [];
+        $archivosSubidosPorSemestre = [];
+        $archivosFaltantesPorSemestre = [];
+
+        foreach ($totalesPorSemestre as $anio => $semestres) {
+            foreach ($semestres as $semestre => $totalControles) {
+                $totalCompleto = isset($totalesCompletosPorSemestre[$anio][$semestre]) ? $totalesCompletosPorSemestre[$anio][$semestre] : 0;
+                $totalIncompleto = isset($totalesIncompletosPorSemestre[$anio][$semestre]) ? $totalesIncompletosPorSemestre[$anio][$semestre] : 0;
+
+                $porcentajeCumplimiento = ($totalCompleto / $totalControles) * 100;
+
+                $archivosSubidos = DB::table('CumplimientoControlMinimo')
+                    ->where('semestre', $semestre)
+                    ->where('anio', $anio)
+                    ->whereNotNull('documentoEvidencia')
+                    ->count();
+                $archivosFaltantes = 96 - $archivosSubidos; // Cambiar 96 por el número total esperado de archivos
+
+                $porcentajeCumplimientoPorSemestre[$anio][$semestre] = $porcentajeCumplimiento;
+                $archivosSubidosPorSemestre[$anio][$semestre] = $archivosSubidos;
+                $archivosFaltantesPorSemestre[$anio][$semestre] = $archivosFaltantes;
+            }
+        }
+
+        return view('home', compact('controlesPorSemestre', 'porcentajeCumplimientoPorSemestre', 'archivosSubidosPorSemestre', 'archivosFaltantesPorSemestre', 'anio'));
     }
     public function guardarImagenLinea(Request $request)
-{
-    $image = $request->input('image');
-
-    // Ruta donde se guardarán las imágenes temporales
-    $rutaTemporal = public_path('capturas_temporales');
-
-    if (!file_exists($rutaTemporal)) {
-        mkdir($rutaTemporal, 0777, true);
-    }
-
-    // Genera un nombre de archivo único con la extensión ".jpg"
-    $nombreArchivo = 'captura_' . uniqid() . '.jpg';
-    $rutaCompleta = $rutaTemporal . '/' . $nombreArchivo;
-
-    // Elimina el encabezado de los datos base64
-    $image = preg_replace('/^data:image\/(png|jpeg|jpg);base64,/', '', $image);
-
-    // Decodifica los datos base64 en una imagen
-    $imagen = base64_decode($image);
-
-    // Guarda la imagen en el servidor en formato JPEG
-    if (file_put_contents($rutaCompleta, $imagen)) {
-        return response()->json(['success' => true, 'nombreImagen' => $nombreArchivo]);
-    } else {
-        return response()->json(['success' => false, 'message' => 'Error al guardar la imagen en el servidor'], 500);
-    }
-}
-
-
-        public function generarPDF($nombreImagen)
     {
-         // Ruta de la imagen capturada
-         $rutaImagen = public_path('capturas_temporales/' . $nombreImagen);
+        $image = $request->input('image');
+
+        // Ruta donde se guardarán las imágenes temporales
+        $rutaTemporal = public_path('capturas_temporales');
+
+        if (!file_exists($rutaTemporal)) {
+            mkdir($rutaTemporal, 0777, true);
+        }
+
+        // Genera un nombre de archivo único con la extensión ".jpg"
+        $nombreArchivo = 'captura_' . uniqid() . '.jpg';
+        $rutaCompleta = $rutaTemporal . '/' . $nombreArchivo;
+
+        // Elimina el encabezado de los datos base64
+        $image = preg_replace('/^data:image\/(png|jpeg|jpg);base64,/', '', $image);
+
+        // Decodifica los datos base64 en una imagen
+        $imagen = base64_decode($image);
+
+        // Guarda la imagen en el servidor en formato JPEG
+        if (file_put_contents($rutaCompleta, $imagen)) {
+            return response()->json(['success' => true, 'nombreImagen' => $nombreArchivo]);
+        } else {
+            return response()->json(['success' => false, 'message' => 'Error al guardar la imagen en el servidor'], 500);
+        }
+    }
+
+
+    public function generarPDF($nombreImagen)
+    {
+        // Ruta de la imagen capturada
+        $rutaImagen = public_path('capturas_temporales/' . $nombreImagen);
 
         $controles = DB::table('ControlMinimos')
             ->get();
-        
-            $nombre= "Reporte general";
+
+        $nombre = "Reporte general";
 
         $controlCompleto = $controles->filter(function ($control) {
             return $control->statusCumplimiento === 'Sí';
@@ -100,7 +137,7 @@ class HomeController extends Controller
         $totalIncompleto = $controlIncompleto->count();
 
         $porcentajeCumplimiento = ($totalCompleto / $totalControles) * 100;
-       
+
 
         $data = [
             'controles' => $controles,

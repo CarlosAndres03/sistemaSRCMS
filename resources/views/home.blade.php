@@ -215,13 +215,13 @@
             <div class="card" style="width: 80rem;">
                 <h1 class="card-header">Gráfica de cumplimiento general</h1>
                 <div class="card-body">
-                @can('editar-control mínimo')
+                <!--@can('editar-control mínimo')
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                         <h5>Descargar reporte
                         </h5><br><a class="btn btn-success" href="#" onclick="capturarImagenYGenerarPDF();"><i class="fas fa-file-pdf"></i></a>
                     </div>
                     @endcan
-                    <div class="container">
+                     <div class="container">
                         <div class="row justify-content-center">
                             <div class="col-md-5">
                                 <h2 style="text-align: center">Cumplimiento de controles mínimos</h2>
@@ -230,7 +230,10 @@
                             <div class="col-md-5">
                                 <h2 h2 style="text-align: center">Cumplimiento de documentación</h2>
                                 <canvas id="graficaCumplimientoTodosProcesos" width="800" height="500"></canvas>
-                            </div>
+                            </div> -->
+                            <div style="width: 80%; margin: auto;">
+        <canvas id="myChart"></canvas>
+    </div>
                         </div>
                     </div>
                 </div>
@@ -242,61 +245,56 @@
 <script src="{{ asset('js/html2canvas.min.js')}}"></script>
 <script src="{{ asset('js/chart.js')}}"></script>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var ctx = document.getElementById('graficaCumplimientoTodosProcesos').getContext('2d');
-
-        var archivosSubidos = {!! $archivosSubidos !!};
-    var archivosFaltantes = {!! $archivosFaltantes !!};
-
-    var myChart = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: ['Subida', 'Faltante'],
-            datasets: [{
-                data: [archivosSubidos, archivosFaltantes],
-                backgroundColor: ["#00b569", "#ff0000"],
-            }],
-        },
-    });
-    });
-</script>
 
 <script>
-    // Obtén el porcentaje de cumplimiento de Laravel y almacénalo en una variable JavaScript
-    var porcentajeCumplimiento = {{ $porcentajeCumplimiento }};
+        var porcentajeCumplimientoPorSemestre = {!! json_encode($porcentajeCumplimientoPorSemestre) !!};
 
-    // Configura los datos de la gráfica de dona
-    var data = {
-        datasets: [{
-            data: [porcentajeCumplimiento, 100 - porcentajeCumplimiento],
-            backgroundColor: ["#00b569", "#ff0000"], // Colores de las porciones de la dona
-        }],
-        labels: ['Sí cumple', 'No cumple'],
-    };
+        // Preparar los datos para Chart.js
+        var labels = [];
+        var data = [];
+        Object.keys(porcentajeCumplimientoPorSemestre).forEach(function(anio) {
+            Object.keys(porcentajeCumplimientoPorSemestre[anio]).forEach(function(semestre) {
+                labels.push(anio + ' - Semestre ' + semestre);
+                data.push(porcentajeCumplimientoPorSemestre[anio][semestre]);
+            });
+        });
 
-    // Configura las opciones de la gráfica
-    var options = {
-        responsive: true,
-        cutoutPercentage: 50, // Controla el tamaño del agujero en el centro de la dona
-    };
-
-    // Obtén el elemento canvas
-    var ctx = document.getElementById('doughnutChart').getContext('2d');
-
-
-    // Crea la gráfica de dona
-    var myDoughnutChart = new Chart(ctx, {
-        type: 'doughnut',
-        data: data,
-        options: options,
-    });
-
-</script>
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Porcentaje de Cumplimiento por Semestre',
+                    data: data,
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Porcentaje'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Semestre'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
 
 <script>
 function capturarImagenYGenerarPDF() {
-    html2canvas(document.getElementById('graficaCumplimientoTodosProcesos')).then(function (canvas) {
+    html2canvas(document.getElementById('myChart')).then(function (canvas) {
         // Captura la imagen en formato JPG
         var image = canvas.toDataURL('image/jpeg');
 

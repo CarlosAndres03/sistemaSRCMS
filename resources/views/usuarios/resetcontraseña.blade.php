@@ -18,37 +18,18 @@
                     </div>
                     @endif
 
-                    {!! Form::model($user, ['method'=>'PATCH', 'route' => ['usuarios.updatePassword','id' => $user->id]]) !!}
+                    {!! Form::model($user, ['method'=>'PATCH', 'route' => ['usuarios.resetpassword','id' => $user->id]]) !!}
                     @csrf
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-12 col-md-12">
-                            <div class="form-group">
-                                <label for="">Usuario: </label>
-                                {!! Form::text('name', null, array('class' => 'form-control'))!!}
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12">
-                            <div class="form-group">
-                                <label for="">Correo: </label>
-                                {!! Form::text('email', null, array('class' => 'form-control'))!!}
-                            </div>
-                        </div>
                         <div class="col-xs-12 col-sm-12 col-md-12">
                             <div class="form-group">
                                 <label for="">Contraseña: </label>
-                                {!! Form::password('password', array('class' => 'form-control'))!!}
+                                {!! Form::password('passwordac', array('class' => 'form-control'))!!}
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12">
                             <div class="form-group">
                                 <label for="">Confirmar contraseña: </label>
-                                {!! Form::password('confirm-password', array('class' => 'form-control'))!!}
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12">
-                            <div class="form-group">
-                                <label for="">Rol: </label>
-                                {!! Form::select('roles[]', $roles,[], array('class' => 'form-control'))!!}
+                                {!! Form::password('confirmpassword', array('class' => 'form-control'))!!}
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12">

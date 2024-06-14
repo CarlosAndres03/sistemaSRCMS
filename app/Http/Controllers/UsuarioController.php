@@ -92,8 +92,7 @@ class UsuarioController extends Controller
         return view('usuarios.bloqueado');
     }
 
-    public function resetpassword(){
-        
+    public function showResetpassword(){
         $id = auth()->id();
         $user = User::find($id);
         $roles = Role::pluck('name', 'name')->all();
@@ -101,6 +100,34 @@ class UsuarioController extends Controller
         return view('usuarios.resetcontraseña', compact('user', 'roles', 'userRole'));
         
     }
+
+    public function resetpassword(Request $request){
+        
+        $request->validate([
+            'passwordac' => 'required|regex:/^(?=.[a-z])(?=.[A-Z])(?=.\d)(?=.[$@$!%?&#.$($)$-$_])[A-Za-z\d$@$!%?&#.$($)$-$_]{8,15}$/',
+            'confirmpassword' => 'required|regex:/^(?=.[a-z])(?=.[A-Z])(?=.\d)(?=.[$@$!%?&#.$($)$-$_])[A-Za-z\d$@$!%?&#.$($)$-$_]{8,15}$/|confirmed',
+        ],
+        [
+            'passwordac.required' => 'El campo Contraseña Actual es obligatorio.',
+            'passwordac.regex' => 'La Contraseña Actual no coincide.',
+
+            'confirmpassword.required' => 'El campo Contraseña Nueva es obligatorio.',
+            'confirmpassword.regex' => 'La Contraseña Nueva debe tener entre 8 y 15 caracteres, al menos un número, al menos una minúscula, al menos una mayúscula y al menos un caracter especial.',
+            'confirmpassword.confirmed' => 'Las contraseñas nuevas deben de coincidir.',
+        ]);
+ 
+        $user = Auth::user();
+
+        if (!Hash::check($request->passwordac, $user->password)) {
+            return redirect()->back()->withErrors(['contrasenia_actual' => 'La contraseña actual no coincide.']);
+        }
+
+        $user->password = Hash::make($request->confirmpassword);
+        $user->save();
+
+        return redirect()->back()->with('success_cambio_contrasenia', '¡Contraseña cambiada exitosamente!');
+    }
+        
 
     public function updatePassword(Request $request, $id){
         $this->validate($request, [

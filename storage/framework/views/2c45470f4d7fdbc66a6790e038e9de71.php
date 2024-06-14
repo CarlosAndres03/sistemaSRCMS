@@ -18,42 +18,20 @@
                     </div>
                     <?php endif; ?>
 
-                    <?php echo Form::model($user, ['method'=>'PATCH', 'route' => ['usuarios.updatePassword','id' => $user->id]]); ?>
+                    <?php echo Form::model($user, ['method'=>'PATCH', 'route' => ['usuarios.resetpassword','id' => $user->id]]); ?>
 
                     <?php echo csrf_field(); ?>
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-12 col-md-12">
-                            <div class="form-group">
-                                <label for="">Usuario: </label>
-                                <?php echo Form::text('name', null, array('class' => 'form-control')); ?>
-
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12">
-                            <div class="form-group">
-                                <label for="">Correo: </label>
-                                <?php echo Form::text('email', null, array('class' => 'form-control')); ?>
-
-                            </div>
-                        </div>
                         <div class="col-xs-12 col-sm-12 col-md-12">
                             <div class="form-group">
                                 <label for="">Contraseña: </label>
-                                <?php echo Form::password('password', array('class' => 'form-control')); ?>
+                                <?php echo Form::password('passwordac', array('class' => 'form-control')); ?>
 
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12">
                             <div class="form-group">
                                 <label for="">Confirmar contraseña: </label>
-                                <?php echo Form::password('confirm-password', array('class' => 'form-control')); ?>
-
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12">
-                            <div class="form-group">
-                                <label for="">Rol: </label>
-                                <?php echo Form::select('roles[]', $roles,[], array('class' => 'form-control')); ?>
+                                <?php echo Form::password('confirmpassword', array('class' => 'form-control')); ?>
 
                             </div>
                         </div>

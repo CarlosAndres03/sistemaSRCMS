@@ -35,14 +35,14 @@
                                 style="display: inline-block;"><i class="fa fa-rotate-left"></i></a>
 
                         </div>
-                    </form>-->
+                    </form>
                     <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('editar-control mínimo')): ?>
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                         <a class="btn btn-success" href="<?php echo e(route('red-tel.create')); ?>"><i class="fa fa-plus">
                                 Nuevo</i></a>
                     </div>
                     <?php endif; ?>
-                    <br>
+                    <br>-->
                     <div class="table-responsive">
                         <table class="table align-middle table-bordered">
                             <thead>

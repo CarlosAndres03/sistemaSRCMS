@@ -92,7 +92,7 @@
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </tbody>
     </table>
-    <h1 class="card-header">Gráfica de cumplimiento</h1>
+    <!-- <h1 class="card-header">Gráfica de cumplimiento</h1> -->
     <div style="text-align: center;">
         <div class="footer">
             <p>Generado el: <?php echo e(now()); ?></p>
